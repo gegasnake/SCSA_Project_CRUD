@@ -187,3 +187,4 @@ CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 AUTH_USER_MODEL = 'user_sign_up.User'
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
