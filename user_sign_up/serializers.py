@@ -1,6 +1,7 @@
-from rest_framework import viewsets, serializers
+from rest_framework import serializers
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 MIN_LENGTH = 1
 PASSWORD_MIN_LENGTH = 8
@@ -9,7 +10,8 @@ MAX_LENGTH = 120
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
+
+    first_name = serializers.CharField(
         min_length=MIN_LENGTH,
         max_length=MAX_LENGTH,
         required=True,
@@ -65,7 +67,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "last_name", "email", "password1", "password2"]
+        fields = ["first_name", "last_name", "email", "password1", "password2"]
 
     def validate(self, data):
         if data["password1"] != data["password2"]:
@@ -75,7 +77,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create(
-            username=validated_data["username"],
+            first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             email=validated_data["email"],
         )
@@ -84,4 +86,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-
